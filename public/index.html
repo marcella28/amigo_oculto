@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amigo Oculto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div id="title" class="border-dotted w-full h-auto m-10">
+        <h1 class="text-5xl flex justify-center items-center">Amigo Oculto Online</h1>
+    </div>
+    <h2 class="text-xl text-center my-4">Olá! Bem-vindo à nossa plataforma de amigo oculto online! Faça seu cadastro e participe de nossos eventos públicos disponíveis, ou, se preferir, crie e personalize o seu!</h2>
+    <h2>Observação: Caso seja um usuário já cadastrado, vá direto para a página de eventos e insira suas credenciais de acesso.</h2>
+
+    <!-- Botão para abrir o modal -->
+    <button onclick="openModal()" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Fazer meu cadastro</button>
+    <button onclick="location = 'eventos.html'" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Página de eventos</button>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal hidden fixed inset-0 z-50 flex items-center justify-center">
+        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+        <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+            <!-- Conteúdo do modal -->
+            <div class="modal-content py-4 text-left px-6">
+                <h2 class="text-2xl font-bold mb-3">Cadastro</h2>
+                <form id="cadastroForm">
+                    <label class="block text-sm font-medium text-gray-600 mb-1" for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" class="border p-2 w-full mb-4" required>
+                
+                    <label class="block text-sm font-medium text-gray-600 mb-1" for="email">Email:</label>
+                    <input type="email" id="email" name="email" class="border p-2 w-full mb-4" required>
+                
+                    <button type="button" onclick="cadastrarUsuario()" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Cadastrar</button>
+                </form>
+                <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded mt-4">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para cadastrar o usuário
+        function cadastrarUsuario() {
+          const nome = document.getElementById('nome').value;
+          const email = document.getElementById('email').value;
+      
+          // Verificar se o e-mail segue um formato básico
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(email)) {
+            alert('Formato de e-mail inválido.');
+            return;
+          }
+      
+          // Requisição AJAX para verificar duplicatas e cadastrar o usuário
+          fetch('/cadastrar', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ nome, email }),
+          })
+          .then(response => {
+            if (!response.ok) {
+              return response.json().then(data => {
+                alert(`Erro ${response.status}: ${data.error}`);
+                throw new Error(`Erro ${response.status}: ${data.error}`);
+              });
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log(data);
+            alert('Usuário cadastrado com sucesso!');
+            closeModal(); // Fechar o modal após o cadastro
+          })
+          .catch(error => {
+            console.error('Erro ao cadastrar usuário:', error);
+            // Remova o segundo alert aqui se desejar
+          });
+        }
+      
+        // Função para abrir o modal
+        function openModal() {
+          document.getElementById('myModal').classList.remove('hidden');
+        }
+      
+        // Função para fechar o modal
+        function closeModal() {
+          document.getElementById('myModal').classList.add('hidden');
+        }
+      </script>
+</body>
+</html>

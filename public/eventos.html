@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Eventos</title>
+</head>
+<body>
+    <!-- Modal -->
+    <div id="myModal" class="modal hidden fixed inset-0 z-50 flex items-center justify-center">
+        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+        <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+            <!-- Conteúdo do modal -->
+            <div class="modal-content py-4 text-left px-6">
+                <h2 class="text-2xl font-bold mb-3">Confirme seu e-mail</h2>
+                <form id="confirmarEmailForm">
+                    <label class="block text-sm font-medium text-gray-600 mb-1" for="email">Insira seu e-mail:</label>
+                    <input type="email" id="email" name="email" class="border p-2 w-full mb-4" required>
+                
+                    <button type="button" onclick="confirmarEmail(),fecharModal() " class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Confirmar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <h1 id="tituloEventos">Eventos disponíveis:</h1>
+
+    <section id="eventos">
+        <!-- Conteúdo da seção de eventos -->
+    </section>
+
+    <h1 id="tituloEventos2">Eventos disponíveis:</h1>
+
+    <section id="meuseventos">
+        <!-- Conteúdo da seção de meus eventos -->
+    </section>
+
+    <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4"> Criar evento</button>
+
+    <script>
+        // Função para solicitar o e-mail
+        function solicitarEmail() {
+            document.getElementById('myModal').classList.remove('hidden');
+            aplicarDesfoque();
+        }
+    
+     // Função para confirmar o e-mail
+     function confirmarEmail() {
+            const email = document.getElementById('email').value;
+
+            // Requisição AJAX para verificar se o e-mail está cadastrado no servidor
+            fetch('/verificar-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        // Tratar erros do servidor
+                        if (data.error) {
+                            window.alert('Erro do servidor: ' + data.error);
+                            // Manter o modal aberto e o desfoque se necessário
+                            return Promise.reject(data.error);
+                        }
+                        // Tratar outros erros não especificados
+                        window.alert('Erro desconhecido do servidor.');
+                        // Manter o modal aberto e o desfoque se necessário
+                        return Promise.reject('Erro desconhecido');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.cadastrado !== undefined) {
+                    if (data.cadastrado) {
+                        // E-mail cadastrado
+                        window.alert('Olá, ' + data.nome + '! E-mail localizado com sucesso!');
+                        
+                // Atualize o título do documento
+                document.title = 'Eventos disponíveis para ' + data.nome;
+                // Atualize o texto do cabeçalho
+                document.getElementById('tituloEventos').innerText = 'Eventos disponíveis para ' + data.nome + ':';
+                document.getElementById('tituloEventos2').innerText = 'Criados por ' + data.nome + ':';
+                        // ...
+                        removerDesfoque();
+                        fecharModal();
+                    } else {
+                        // E-mail não cadastrado
+                        window.alert('E-mail não cadastrado ou inválido. Insira um e-mail válido.');
+                        // Manter o modal aberto e o desfoque
+                        return;
+                    }
+                } else {
+                    // Tratar outros erros do servidor
+                    window.alert('Erro desconhecido do servidor.');
+                    // Manter o modal aberto e o desfoque se necessário
+
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao verificar e-mail:', error);
+                // Já tratamos os erros no bloco acima, mas você pode adicionar mais lógica aqui, se necessário
+            })
+           
+        }
+        // Função para fechar o modal
+        function fecharModal() {
+            document.getElementById('myModal').classList.add('hidden');
+            document.getElementById('email').value = ''; // Limpa o campo de e-mail ao fechar o modal
+        }
+    
+        // Função para aplicar desfoque
+        function aplicarDesfoque() {
+            document.getElementById('eventos').classList.add('desfoque');
+            document.getElementById('meuseventos').classList.add('desfoque');
+            document.getElementById('criarEventoBtn').classList.add('desfoque');
+        }
+    
+        // Função para remover desfoque
+        function removerDesfoque() {
+            document.getElementById('eventos').classList.remove('desfoque');
+            document.getElementById('meuseventos').classList.remove('desfoque');
+            document.getElementById('criarEventoBtn').classList.remove('desfoque');
+        }
+    
+        // Chama a função para solicitar o e-mail ao carregar a página
+        window.onload = solicitarEmail;
+    </script>
+    
+    </body>
+    </html>

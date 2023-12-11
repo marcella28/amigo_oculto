@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo evento</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <h1 class="text-3xl font-bold mb-4">Olá novamente! Preencha o formulário abaixo e clique no botão para criar seu próprio evento de amigo oculto!</h1>
+    <h2 class="mb-4"><strong>Atenção!</strong> Após o envio do formulário, você receberá uma senha em seu email para entrar em seu evento como administrador.</h2>
+
+    <form class="max-w-md mx-auto">
+        <label for="nome" class="block text-sm font-medium text-gray-600 mb-1">Insira seu nome:</label>
+        <input type="text" class="border p-2 w-full mb-4">
+
+        <label for="email" class="block text-sm font-medium text-gray-600 mb-1">Insira seu email:</label>
+        <input type="email" class="border p-2 w-full mb-4">
+
+        <label for="evento" class="block text-sm font-medium text-gray-600 mb-1">Nome do evento:</label>
+        <input type="text" class="border p-2 w-full mb-4">
+
+        <label for="data" class="block text-sm font-medium text-gray-600 mb-1">Data em que o evento acontecerá:</label>
+        <input type="date" class="border p-2 w-full mb-4">
+
+        <label for="local" class="block text-sm font-medium text-gray-600 mb-1">Local de encontro do evento:</label>
+        <input type="text" class="border p-2 w-full mb-4">
+
+        <label for="valor" class="block text-sm font-medium text-gray-600 mb-1">Valor máximo dos presentes (em reais):</label>
+        <input type="number" class="border p-2 w-full mb-4">
+
+        <label for="desc" class="block text-sm font-medium text-gray-600 mb-1">Número máximo de pessoas que poderão participar:</label>
+        <input type="number" class="border p-2 w-full mb-4">
+
+        <label for="desc" class="block text-sm font-medium text-gray-600 mb-1">Insira uma breve descrição para o evento:</label>
+        <textarea class="border p-2 w-full mb-4"></textarea>
+        
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Criar evento</button>
+    </form>
+</body>
+</html>
