@@ -109,7 +109,8 @@
                 <label for="emailParticipante" class="block text-sm font-medium text-gray-600 mb-1">Email do Participante:</label>
                 <input type="email" id="emailParticipante" class="border p-2 w-full mb-4" required>
 
-                <button type="button" id="btnAdicionarParticipanteModal" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Adicionar Participante</button>
+                <button type="button" id="btnAdicionarParticipanteModal" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Adicionar </button>
+
                 <button type="button" onclick="fecharModalAdicionarParticipante()" class="bg-red-500 text-white px-4 py-2 rounded mt-4 ml-2">Cancelar</button>
             </form>
         </div>
@@ -424,14 +425,9 @@ function criarDivEventoComExclusao(evento, container) {
         }
     }
 
-    function adicionarParticipantes(eventoId) {
-    // Lógica para adicionar participantes ao evento com o ID fornecido
-    // Pode usar um prompt, um modal ou outra interface para coletar os dados dos participantes
-    const nomeParticipante = prompt('Insira o nome do participante:');
-    const emailParticipante = prompt('Insira o email do participante:');
-
+    function adicionarParticipante(eventoId, nomeParticipante, emailParticipante) {
     // Encontrar o evento na lista
-    const evento = eventosCriados.find(evento => evento.id === eventoId);
+    const evento = eventosCriados.find(evento => evento.id == eventoId);
 
     if (evento) {
         // Adicionar participante ao evento
@@ -439,9 +435,21 @@ function criarDivEventoComExclusao(evento, container) {
 
         // Atualizar a exibição dos eventos criados
         atualizarEventosCriadosComExclusao();
+
+        // Fechar o modal após adicionar o participante
+        fecharModalAdicionarParticipante();
     }
 }
-document.getElementById('btnAdicionarParticipanteModal').addEventListener('click', adicionarParticipanteModal);
+document.getElementById('btnAdicionarParticipanteModal').addEventListener('click', function() {
+    const nomeParticipante = document.getElementById('nomeParticipante').value;
+    const emailParticipante = document.getElementById('emailParticipante').value;
+    const eventoId = document.getElementById('btnAdicionarParticipanteModal').dataset.eventoId;
+
+    adicionarParticipante(eventoId, nomeParticipante, emailParticipante);
+});
+
+
+
 
 function adicionarParticipanteModal() {
     const nomeParticipante = document.getElementById('nomeParticipante').value;
