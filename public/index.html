@@ -6,17 +6,21 @@
     <title>Amigo Oculto</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100">
-    <div id="title" class="border-dotted w-full h-auto m-10">
-        <h1 class="text-5xl flex justify-center items-center">Amigo Oculto Online</h1>
+<body class="bg-amber-50">
+    <div id="title" class="w-full h-[100px] m-10  flex justify-center items-center">
+        <h1 class="text-6xl flex justify-center items-center bg-lime-300 w-[900px] h-[100px] rounded-[10px] border border-red-500 border-groove border-[4px]">Amigo Oculto Online</h1>
     </div>
-    <h2 class="text-xl text-center my-4">Olá! Bem-vindo à nossa plataforma de amigo oculto online! Faça seu cadastro e participe de nossos eventos públicos disponíveis, ou, se preferir, crie e personalize o seu!</h2>
-    <h2>Observação: Caso seja um usuário já cadastrado, vá direto para a página de eventos e insira suas credenciais de acesso.</h2>
-
+    <div class="flex justify-center items-center">
+    <div class="m-10 w-[1100px]   flex-col ">
+    <h2 class="text-xl text-center m-10">Olá! Bem-vindo à nossa plataforma de amigo oculto online! Faça seu cadastro e participe de nossos eventos públicos disponíveis, ou, se preferir, crie e personalize o seu!</h2>
+    <h2 class="text-l text-center m-5"><strong>Observação:</strong> Caso seja um usuário já cadastrado, vá direto para a página de eventos e insira suas credenciais de acesso.</h2>
+  </div>
+</div>
+    <div class="flex justify-center items-center m-6 ">
     <!-- Botão para abrir o modal -->
-    <button onclick="openModal()" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Fazer meu cadastro</button>
-    <button onclick="location = 'eventos.html'" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Página de eventos</button>
-
+    <button onclick="openModal()" class="bg-lime-600  px-4 py-2 rounded m-4 border border-red-500 border-groove border-[3px]"> <strong>Fazer meu cadastro</strong></button>
+    <button onclick="location = 'eventos.html'" class="bg-lime-600  px-4 py-2 rounded m-4 border border-red-500 border-groove border-[3px]"> <strong>Página de eventos</strong></button>
+  </div>
     <!-- Modal -->
     <div id="myModal" class="modal hidden fixed inset-0 z-50 flex items-center justify-center">
         <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>

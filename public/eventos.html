@@ -6,7 +6,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Eventos</title>
 </head>
-<body>
+<body class="bg-amber-50">
+    <div id="title" class="w-full h-[100px] m-10  flex justify-center items-center">
+        <h1 class="text-6xl flex justify-center items-center bg-lime-300 w-[900px] h-[100px] rounded-[10px] border border-red-500 border-groove border-[4px]">Eventos</h1>
+    </div>
     <!-- Modal -->
     <div id="myModal" class="modal hidden fixed inset-0 z-50 flex items-center justify-center">
         <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
@@ -24,19 +27,23 @@
         </div>
     </div>
 
-    <h1 id="tituloEventos">Eventos disponíveis:</h1>
+    <h1 id="tituloEventos" class="text-[20px] flex justify-center items-center bg-lime-200 w-[500px] h-[50px] rounded-[10px] m-5">Eventos disponíveis:</h1>
 
     <section id="eventos">
         <!-- Conteúdo da seção de eventos -->
     </section>
 
-    <h1 id="tituloEventos2">Eventos disponíveis:</h1>
+    <h1 id="tituloEventos2" class="text-[20px] flex justify-center items-center bg-lime-200 w-[500px] h-[50px] rounded-[10px] m-5">Eventos criados por:</h1>
 
     <section id="meuseventos">
         <!-- Conteúdo da seção de meus eventos -->
     </section>
 
-    <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4"> Criar evento</button>
+<div class=" flex justify-center items-center m-10">
+    <button  onclick="location = 'new.html'" class="bg-lime-400  px-4 py-2 rounded mt-4 border border-red-500 ">Novo evento</button>
+</div>
+
+
 
     <script>
         // Função para solicitar o e-mail
