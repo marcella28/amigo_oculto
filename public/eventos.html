@@ -21,7 +21,7 @@
                     <label class="block text-sm font-medium text-gray-600 mb-1" for="email">Insira seu e-mail:</label>
                     <input type="email" id="email" name="email" class="border p-2 w-full mb-4" required>
                 
-                    <button type="button" onclick="confirmarEmail(),fecharModal() " class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Confirmar</button>
+                    <button type="button" onclick="confirmarEmail()" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Confirmar</button>
                 </form>
             </div>
         </div>
@@ -39,104 +39,457 @@
         <!-- Conteúdo da seção de meus eventos -->
     </section>
 
-<div class=" flex justify-center items-center m-10">
-    <button  onclick="location = 'new.html'" class="bg-lime-400  px-4 py-2 rounded mt-4 border border-red-500 ">Novo evento</button>
+    <div class=" flex justify-center items-center m-10">
+        <button onclick="exibirFormularioNovoEvento()" class="bg-lime-400 px-4 py-2 rounded mt-4 border border-red-500" id="criarEventoBtn">Novo evento</button>
+    </div>
+
+    <!-- Formulário para criar novo evento -->
+    <div id="formularioNovoEvento" class="modal hidden fixed inset-0 z-50 flex items-center justify-center">
+        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+        <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+            <!-- Conteúdo do modal -->
+            <div class="modal-content py-4 text-left px-6">
+                <h2 class="text-2xl font-bold mb-3">Criar Novo Evento</h2>
+                <!-- Conteúdo do formulário -->
+                <form class="max-w-md mx-auto">
+                    <label for="nome" class="block text-sm font-medium text-gray-600 mb-1">Insira seu nome:</label>
+                    <input type="text" id="nome" class="border p-2 w-full mb-4">
+
+                    <label for="email" class="block text-sm font-medium text-gray-600 mb-1">Insira seu email:</label>
+                    <input type="email" id="email" class="border p-2 w-full mb-4">
+
+                    <label for="evento" class="block text-sm font-medium text-gray-600 mb-1">Nome do evento:</label>
+                    <input type="text" id="nomeEvento" class="border p-2 w-full mb-4">
+
+                    <label for="data" class="block text-sm font-medium text-gray-600 mb-1">Data em que o evento acontecerá:</label>
+                    <input type="date" id="dataEvento" class="border p-2 w-full mb-4">
+
+                    <label for="local" class="block text-sm font-medium text-gray-600 mb-1">Local de encontro do evento:</label>
+                    <input type="text" id="localEvento" class="border p-2 w-full mb-4">
+
+                    <label for="valor" class="block text-sm font-medium text-gray-600 mb-1">Valor máximo dos presentes (em reais):</label>
+                    <input type="number" id="valorMaximo" class="border p-2 w-full mb-4">
+
+                    <label for="desc" class="block text-sm font-medium text-gray-600 mb-1">Número máximo de pessoas que poderão participar:</label>
+                    <input type="number" id="numeroParticipantes" class="border p-2 w-full mb-4">
+
+                    <label for="desc" class="block text-sm font-medium text-gray-600 mb-1">Insira uma breve descrição para o evento:</label>
+                    <textarea id="descricaoEvento" class="border p-2 w-full mb-4"></textarea>
+                    
+                    <button type="button" onclick="criarNovoEvento()" class="bg-lime-400 px-4 py-2 rounded mt-4 border border-red-500">Criar evento</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="detalhesEventoModal" class="modal hidden fixed inset-0 z-50 flex items-center justify-center">
+        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+        <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+            <div class="modal-content py-4 text-left px-6">
+                <h2 class="text-2xl font-bold mb-3" id="detalhesEventoModalTitle">Detalhes do Evento</h2>
+                <div id="detalhesEventoContent"></div>
+                <button type="button" onclick="fecharDetalhesEventoModal()" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal de adicionar participante -->
+<div id="modalAdicionarParticipante" class="modal hidden fixed inset-0 z-50 flex items-center justify-center">
+    <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+    <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+        <!-- Conteúdo do modal -->
+        <div class="modal-content py-4 text-left px-6">
+            <h2 class="text-2xl font-bold mb-3">Adicionar Participante</h2>
+            <!-- Conteúdo do formulário -->
+            <form id="adicionarParticipanteForm">
+                <label for="nomeParticipante" class="block text-sm font-medium text-gray-600 mb-1">Nome do Participante:</label>
+                <input type="text" id="nomeParticipante" class="border p-2 w-full mb-4" required>
+
+                <label for="emailParticipante" class="block text-sm font-medium text-gray-600 mb-1">Email do Participante:</label>
+                <input type="email" id="emailParticipante" class="border p-2 w-full mb-4" required>
+
+                <button type="button" id="btnAdicionarParticipanteModal" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Adicionar Participante</button>
+                <button type="button" onclick="fecharModalAdicionarParticipante()" class="bg-red-500 text-white px-4 py-2 rounded mt-4 ml-2">Cancelar</button>
+            </form>
+        </div>
+    </div>
 </div>
 
 
-
     <script>
-        // Função para solicitar o e-mail
-        function solicitarEmail() {
-            document.getElementById('myModal').classList.remove('hidden');
+        // Função para exibir o formulário de novo evento
+        function exibirFormularioNovoEvento() {
+            document.getElementById('formularioNovoEvento').classList.remove('hidden');
             aplicarDesfoque();
         }
-    
-     // Função para confirmar o e-mail
-     function confirmarEmail() {
-            const email = document.getElementById('email').value;
+    // Função para solicitar o e-mail
+    function solicitarEmail() {
+        document.getElementById('myModal').classList.remove('hidden');
+        aplicarDesfoque();
+    }
 
-            // Requisição AJAX para verificar se o e-mail está cadastrado no servidor
-            fetch('/verificar-email', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email }),
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(data => {
-                        // Tratar erros do servidor
-                        if (data.error) {
-                            window.alert('Erro do servidor: ' + data.error);
-                            // Manter o modal aberto e o desfoque se necessário
-                            return Promise.reject(data.error);
-                        }
-                        // Tratar outros erros não especificados
-                        window.alert('Erro desconhecido do servidor.');
-                        // Manter o modal aberto e o desfoque se necessário
-                        return Promise.reject('Erro desconhecido');
-                    });
+ // Função para confirmar o e-mail
+ function confirmarEmail() {
+    const email = document.getElementById('email').value;
+
+    // Requisição AJAX para verificar se o e-mail está cadastrado no servidor
+    fetch('/verificar-email', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                // Tratar erros do servidor
+                if (data.error) {
+                    window.alert('Erro do servidor: ' + data.error);
+                    // Manter o modal aberto e o desfoque se necessário
+                    return Promise.reject(data.error);
                 }
-                return response.json();
-            })
-            .then(data => {
-                if (data.cadastrado !== undefined) {
-                    if (data.cadastrado) {
-                        // E-mail cadastrado
-                        window.alert('Olá, ' + data.nome + '! E-mail localizado com sucesso!');
-                        
+                // Tratar outros erros não especificados
+                window.alert('Erro desconhecido do servidor.');
+                // Manter o modal aberto e o desfoque se necessário
+                return Promise.reject('Erro desconhecido');
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.cadastrado !== undefined) {
+            if (data.cadastrado) {
+                // E-mail cadastrado
+                window.alert('Olá, ' + data.nome + '! E-mail localizado com sucesso!');
+                
                 // Atualize o título do documento
                 document.title = 'Eventos disponíveis para ' + data.nome;
                 // Atualize o texto do cabeçalho
                 document.getElementById('tituloEventos').innerText = 'Eventos disponíveis para ' + data.nome + ':';
                 document.getElementById('tituloEventos2').innerText = 'Criados por ' + data.nome + ':';
-                        // ...
-                        removerDesfoque();
-                        fecharModal();
-                    } else {
-                        // E-mail não cadastrado
-                        window.alert('E-mail não cadastrado ou inválido. Insira um e-mail válido.');
-                        // Manter o modal aberto e o desfoque
-                        return;
-                    }
-                } else {
-                    // Tratar outros erros do servidor
-                    window.alert('Erro desconhecido do servidor.');
-                    // Manter o modal aberto e o desfoque se necessário
+                
+                // Fechar o modal após a confirmação
+                fecharModal();
 
+                } else {
+                    // E-mail não cadastrado
+                    window.alert('E-mail não cadastrado ou inválido. Insira um e-mail válido.');
+                    // Manter o modal aberto e o desfoque
+                    return;
                 }
-            })
-            .catch(error => {
-                console.error('Erro ao verificar e-mail:', error);
-                // Já tratamos os erros no bloco acima, mas você pode adicionar mais lógica aqui, se necessário
-            })
-           
+            } else {
+                // Tratar outros erros do servidor
+                window.alert('Erro desconhecido do servidor.');
+                // Manter o modal aberto e o desfoque se necessário
+
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao verificar e-mail:', error);
+            // Já tratamos os erros no bloco acima, mas você pode adicionar mais lógica aqui, se necessário
+        })
+       
+    }
+    // Função para fechar o modal
+    function fecharModal() {
+        document.getElementById('myModal').classList.add('hidden');
+        document.getElementById('email').value = ''; // Limpa o campo de e-mail ao fechar o modal
+    }
+
+    // Função para aplicar desfoque
+    function aplicarDesfoque() {
+        document.getElementById('eventos').classList.add('desfoque');
+        document.getElementById('meuseventos').classList.add('desfoque');
+        document.getElementById('criarEventoBtn').classList.add('desfoque');
+    }
+
+    // Função para remover desfoque
+    function removerDesfoque() {
+        document.getElementById('eventos').classList.remove('desfoque');
+        document.getElementById('meuseventos').classList.remove('desfoque');
+        document.getElementById('criarEventoBtn').classList.remove('desfoque');
+    }
+
+
+
+    // Recuperar eventos do localStorage ou inicializar uma lista vazia
+    let eventosCriados = JSON.parse(localStorage.getItem('eventosCriados')) || [];
+        const eventosDisponiveis = JSON.parse(localStorage.getItem('eventosDisponiveis')) || [];
+
+// Função para salvar eventos no localStorage
+function salvarEventosLocalStorage() {
+localStorage.setItem('eventosCriados', JSON.stringify(eventosCriados));
+localStorage.setItem('eventosDisponiveis', JSON.stringify(eventosDisponiveis));
+}
+
+// Adicionar um novo evento
+function adicionarNovoEvento(evento) {
+eventosCriados.push(evento);
+salvarEventosLocalStorage();
+}
+
+// Adicionar um evento disponível para participar
+function adicionarEventoDisponivel(evento) {
+eventosDisponiveis.push(evento);
+salvarEventosLocalStorage();
+}
+
+// Função para mostrar detalhes do evento no modal
+function mostrarDetalhesEventoModal(evento) {
+            const detalhesEventoModal = document.getElementById('detalhesEventoModal');
+            const detalhesEventoTitle = document.getElementById('detalhesEventoModalTitle');
+            const detalhesEventoContent = document.getElementById('detalhesEventoContent');
+
+            detalhesEventoTitle.textContent = `Detalhes do Evento: ${evento.nome}`;
+            detalhesEventoContent.innerHTML = `
+                <p>ID: ${evento.id}</p>
+                <p>Data: ${evento.data}</p>
+                <p>Local: ${evento.local}</p>
+                <p>Valor Máximo: R$ ${evento.valor}</p>
+                <p>Descrição: ${evento.descricao}</p>
+            `;
+
+            detalhesEventoModal.classList.remove('hidden');
+            aplicarDesfoque();
         }
+
+        // Função para fechar o modal de detalhes do evento
+        function fecharDetalhesEventoModal() {
+            const detalhesEventoModal = document.getElementById('detalhesEventoModal');
+            detalhesEventoModal.classList.add('hidden');
+            removerDesfoque();
+        }
+
+
+        // Função para mostrar detalhes do evento ao clicar em uma div
+        function mostrarDetalhesEventoDiv(evento) {
+            mostrarDetalhesEventoModal(evento);
+        }
+
+       // Função para criar uma div de evento
+       function criarDivEvento(evento, container) {
+            const divEvento = document.createElement('div');
+            divEvento.classList.add('evento', 'bg-lime-100', 'rounded-md', 'p-4', 'm-2');
+
+            divEvento.innerHTML = `
+                <h2 class="text-xl font-semibold">${evento.nome}</h2>
+                <p>Data: ${evento.dataEvento}</p>
+                <p>Local: ${evento.localEvento}</p>
+                <p>Valor Máximo: R$ ${evento.valorMaximo}</p>
+                <p>Descrição: ${evento.descricaoEvento}</p>
+            `;
+
+            container.appendChild(divEvento);
+        }
+
+        // Função para atualizar a exibição dos eventos criados
+        function atualizarEventosCriados() {
+            const eventosCriadosSection = document.getElementById('meuseventos');
+            eventosCriadosSection.innerHTML = '';
+
+            eventosCriados.forEach(evento => {
+                criarDivEvento(evento, eventosCriadosSection);
+            });
+        }
+
+function mostrarDetalhesEvento(evento) {
+        const eventosCriadosSection = document.getElementById('meuseventos');
+        
+        // Crie uma nova div para o evento
+        const divEvento = document.createElement('div');
+        divEvento.classList.add('evento', 'bg-lime-100', 'rounded-md', 'p-4', 'm-2');
+
+        // Preencha as informações do evento na div
+        divEvento.innerHTML = `
+            <h2 class="text-xl font-semibold">${evento.nome}</h2>
+            <p>Data: ${evento.data}</p>
+            <p>Local: ${evento.local}</p>
+            <p>Valor Máximo: R$ ${evento.valor}</p>
+            <p>Descrição: ${evento.descricao}</p>
+        `;
+
+        // Adicione a div do evento à seção de eventos criados
+        eventosCriadosSection.appendChild(divEvento);
+    }
+
+      
+
         // Função para fechar o modal
         function fecharModal() {
             document.getElementById('myModal').classList.add('hidden');
-            document.getElementById('email').value = ''; // Limpa o campo de e-mail ao fechar o modal
+            // Limpe os campos do formulário ao fechar o modal
+            document.getElementById('novoEventoForm').reset();
+            // Remova o desfoque
+            removerDesfoque();
         }
-    
-        // Função para aplicar desfoque
-        function aplicarDesfoque() {
-            document.getElementById('eventos').classList.add('desfoque');
-            document.getElementById('meuseventos').classList.add('desfoque');
-            document.getElementById('criarEventoBtn').classList.add('desfoque');
+
+
+
+        // Função para criar um novo evento
+    function criarNovoEvento() {
+        const nomeEvento = document.getElementById('nomeEvento').value;
+        const dataEvento = document.getElementById('dataEvento').value;
+        const localEvento = document.getElementById('localEvento').value;
+        const valorMaximo = document.getElementById('valorMaximo').value;
+        const descricaoEvento = document.getElementById('descricaoEvento').value;
+
+        // Verificar se o evento com o mesmo nome já existe
+        if (eventosCriados.some(evento => evento.nome === nomeEvento)) {
+            alert('Já existe um evento com esse nome. Escolha um nome único.');
+            return;
         }
+
+        const novoEvento = {
+            id: eventosCriados.length + 1,
+            nome: nomeEvento,
+            data: dataEvento,
+            local: localEvento,
+            valor: valorMaximo,
+            descricao: descricaoEvento,
+        };
+
+         // Adicione o evento à lista de eventos criados
+    adicionarNovoEvento(novoEvento);
+
+// Atualize a exibição da lista de eventos criados
+atualizarEventosCriados();
+
+// Mostrar detalhes do evento criado
+mostrarDetalhesEvento(novoEvento);
+
+// Fechar o modal após criar o evento
+fecharFormularioNovoEvento();
+
+
+    }
+
+    // Função para fechar o modal de novo evento
+    function fecharFormularioNovoEvento() {
+        const formularioNovoEvento = document.getElementById('formularioNovoEvento');
+        formularioNovoEvento.classList.add('hidden');
+        removerDesfoque();
+    }
+
     
-        // Função para remover desfoque
-        function removerDesfoque() {
-            document.getElementById('eventos').classList.remove('desfoque');
-            document.getElementById('meuseventos').classList.remove('desfoque');
-            document.getElementById('criarEventoBtn').classList.remove('desfoque');
+
+    // Função para atualizar a exibição dos eventos criados com botões de exclusão
+function atualizarEventosCriadosComExclusao() {
+    const eventosCriadosSection = document.getElementById('meuseventos');
+    eventosCriadosSection.innerHTML = '';
+
+    eventosCriados.forEach(evento => {
+        criarDivEventoComExclusao(evento, eventosCriadosSection);
+    });
+}
+
+// Função para criar uma div de evento com botão de exclusão
+function criarDivEventoComExclusao(evento, container) {
+    const divEvento = document.createElement('div');
+    divEvento.classList.add('evento', 'bg-lime-100', 'rounded-md', 'p-4', 'm-2');
+
+    const divConteudo = document.createElement('div');
+    divConteudo.innerHTML = `
+        <h2 class="text-xl font-semibold">${evento.nome}</h2>
+        <p>Data: ${evento.data}</p>
+        <p>Local: ${evento.local}</p>
+        <p>Valor Máximo: R$ ${evento.valor}</p>
+        <p>Descrição: ${evento.descricao}</p>`;
+
+    // Botão de exclusão
+    const btnExcluir = document.createElement('button');
+    btnExcluir.textContent = 'Excluir Evento';
+    btnExcluir.classList.add('bg-red-500', 'text-white', 'px-4', 'py-2', 'rounded', 'mt-2');
+    btnExcluir.addEventListener('click', () => excluirEvento(evento.id));
+
+    // Botão de adicionar participante
+    const btnAdicionarParticipante = document.createElement('button');
+    btnAdicionarParticipante.textContent = 'Adicionar Participante';
+    btnAdicionarParticipante.classList.add('bg-blue-500', 'text-white', 'px-4', 'py-2', 'rounded', 'mt-2', 'ml-2');
+    btnAdicionarParticipante.addEventListener('click', () => abrirModalAdicionarParticipante(evento.id));
+
+    divConteudo.appendChild(btnExcluir);
+    divConteudo.appendChild(btnAdicionarParticipante);
+    divEvento.appendChild(divConteudo);
+    container.appendChild(divEvento);
+}
+    // Função para excluir um evento
+    function excluirEvento(eventoId) {
+        const confirmarExclusao = confirm('Tem certeza que deseja excluir este evento?');
+        if (confirmarExclusao) {
+            eventosCriados = eventosCriados.filter(evento => evento.id !== eventoId);
+            atualizarEventosCriadosComExclusao();
+            salvarEventosLocalStorage();
         }
-    
-        // Chama a função para solicitar o e-mail ao carregar a página
-        window.onload = solicitarEmail;
-    </script>
+    }
+
+    function adicionarParticipantes(eventoId) {
+    // Lógica para adicionar participantes ao evento com o ID fornecido
+    // Pode usar um prompt, um modal ou outra interface para coletar os dados dos participantes
+    const nomeParticipante = prompt('Insira o nome do participante:');
+    const emailParticipante = prompt('Insira o email do participante:');
+
+    // Encontrar o evento na lista
+    const evento = eventosCriados.find(evento => evento.id === eventoId);
+
+    if (evento) {
+        // Adicionar participante ao evento
+        evento.participantes.push({ nome: nomeParticipante, email: emailParticipante });
+
+        // Atualizar a exibição dos eventos criados
+        atualizarEventosCriadosComExclusao();
+    }
+}
+document.getElementById('btnAdicionarParticipanteModal').addEventListener('click', adicionarParticipanteModal);
+
+function adicionarParticipanteModal() {
+    const nomeParticipante = document.getElementById('nomeParticipante').value;
+    const emailParticipante = document.getElementById('emailParticipante').value;
+    const eventoId = document.getElementById('btnAdicionarParticipanteModal').dataset.eventoId;
+
+    // Encontrar o evento na lista
+    const evento = eventosCriados.find(evento => evento.id == eventoId);
+
+    if (evento) {
+        // Adicionar participante ao evento
+        evento.participantes.push({ nome: nomeParticipante, email: emailParticipante });
+
+        // Atualizar a exibição dos eventos criados
+        atualizarEventosCriadosComExclusao();
+
+        // Fechar o modal após adicionar o participante
+        fecharModalAdicionarParticipante();
+    }
+}
+
+// Função para abrir o modal de adicionar participante
+function abrirModalAdicionarParticipante(eventoId) {
+    const modalAdicionarParticipante = document.getElementById('modalAdicionarParticipante');
+    const btnAdicionarParticipanteModal = document.getElementById('btnAdicionarParticipanteModal');
+
+    // Atualiza o eventoId no botão do modal
+    btnAdicionarParticipanteModal.dataset.eventoId = eventoId;
+
+    modalAdicionarParticipante.classList.remove('hidden');
+    aplicarDesfoque();
+}
+
+// Função para fechar o modal de adicionar participante
+function fecharModalAdicionarParticipante() {
+    const modalAdicionarParticipante = document.getElementById('modalAdicionarParticipante');
+    modalAdicionarParticipante.classList.add('hidden');
+    document.getElementById('nomeParticipante').value = ''; // Limpa o campo de nome do participante
+    document.getElementById('emailParticipante').value = ''; // Limpa o campo de email do participante
+    removerDesfoque();
+}
+       
+    // Chama a função para solicitar o e-mail ao carregar a página
+    window.onload = solicitarEmail; 
+    // Atualize a exibição dos eventos criados ao carregar a página
+    atualizarEventosCriados();
+    atualizarEventosCriadosComExclusao();
+</script>
     
     </body>
     </html>

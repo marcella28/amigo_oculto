@@ -84,6 +84,58 @@ app.post('/cadastrar', (req, res) => {
     });
 });
 
+// Adicione essas variáveis globais para armazenar os eventos
+let eventosCriados = [];
+let eventosDisponiveis = [];
+
+// Adicione essas rotas para fornecer eventos criados e disponíveis
+app.get('/eventos-criados', (req, res) => {
+  res.json(eventosCriados);
+});
+
+app.get('/eventos-disponiveis', (req, res) => {
+  res.json(eventosDisponiveis);
+});
+
+// Rota para criar um novo evento
+app.post('/criar-evento', (req, res) => {
+  const novoEvento = req.body;
+
+  // Adicione o novo evento à lista de eventos criados
+  eventosCriados.push(novoEvento);
+
+  // Adicione o novo evento à lista de eventos disponíveis
+  eventosDisponiveis.push(novoEvento);
+
+  res.json({ message: 'Evento criado com sucesso!' });
+});
+
+// Rota para participar de um evento
+app.post('/participar-evento', (req, res) => {
+  const { email, nome, idEvento } = req.body;
+
+  // Encontre o evento pelo ID
+  const evento = eventosDisponiveis.find(e => e.id === idEvento);
+
+  if (!evento) {
+    return res.status(404).json({ error: 'Evento não encontrado.' });
+  }
+
+  // Adicione o participante ao evento
+  evento.participantes.push({ nome, email });
+
+  res.json({ message: 'Participação confirmada!' });
+});
+
+// Adicione essas rotas para fornecer eventos criados e disponíveis
+app.get('/eventos-criados', (req, res) => {
+  res.json(eventosCriados);
+});
+
+app.get('/eventos-disponiveis', (req, res) => {
+  res.json(eventosDisponiveis);
+});
+
 
 
   
@@ -91,3 +143,4 @@ app.post('/cadastrar', (req, res) => {
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
 });
+
